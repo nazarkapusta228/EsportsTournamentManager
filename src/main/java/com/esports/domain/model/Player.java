@@ -2,10 +2,10 @@ package com.esports.domain.model;
 
 import java.util.Objects;
 
-public class Player {
+public abstract class Player {
     private Long id;
     private String nickname;
-    private String role; // Наприклад: Rifler, AWPer, In-Game Leader тощо
+    private String role;
 
     public Player() {
     }
@@ -15,6 +15,8 @@ public class Player {
         this.nickname = nickname;
         this.role = role;
     }
+
+    public abstract String getPlayerType();
 
     public Long getId() {
         return id;

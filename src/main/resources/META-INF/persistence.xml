@@ -3,7 +3,53 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-  <persistence-unit name="default">
 
-  </persistence-unit>
+    <persistence-unit name="EsportsPU" transaction-type="RESOURCE_LOCAL">
+
+        <!-- JPA Entity Classes -->
+        <class>com.esports.infrastructure.database.entity.TeamEnt</class>
+        <class>com.esports.infrastructure.database.entity.PlayerEnt</class>
+        <class>com.esports.infrastructure.database.entity.ProPlayerEnt</class>
+        <class>com.esports.infrastructure.database.entity.AmateurPlayerEnt</class>
+        <class>com.esports.infrastructure.database.entity.TournamentEnt</class>
+        <class>com.esports.infrastructure.database.entity.OnlineTournamentEnt</class>
+        <class>com.esports.infrastructure.database.entity.LanTournamentEnt</class>
+        <class>com.esports.infrastructure.database.entity.MatchEnt</class>
+        <class>com.esports.infrastructure.database.entity.GroupEnt</class>
+        <class>com.esports.infrastructure.database.entity.TournamentRegistrationEnt</class>
+
+        <properties>
+            <!-- PostgreSQL Connection Properties -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/esportsdb"/>
+            <property name="jakarta.persistence.jdbc.user" value="esports"/>
+            <property name="jakarta.persistence.jdbc.password" value="esportspassword"/>
+            <!-- Force password authentication method to bypass SCRAM -->
+            <property name="hibernate.connection.password" value="esportspassword"/>
+
+            <!-- Hibernate Properties -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+
+            <!-- Schema Generation -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Connection Pool Settings (for better performance) -->
+            <property name="hibernate.connection.pool_size" value="10"/>
+
+            <!-- Transaction Isolation Level: READ_COMMITTED -->
+            <!-- Це забезпечує баланс між продуктивністю та цілісністю даних.
+                 Запобігає dirty reads, але дозволяє non-repeatable reads.
+                 Оптимістичні блокування (@Version) додатково захищають від lost updates. -->
+            <property name="hibernate.connection.isolation" value="2"/>
+
+            <!-- Enable second-level cache (optional, можна використати для оптимізації) -->
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+
+            <!-- Statistics for monitoring (useful for development) -->
+            <property name="hibernate.generate_statistics" value="false"/>
+
+        </properties>
+    </persistence-unit>
 </persistence>

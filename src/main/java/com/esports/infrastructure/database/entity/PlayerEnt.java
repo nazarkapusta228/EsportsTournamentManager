@@ -1,30 +1,32 @@
 package com.esports.infrastructure.database.entity;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "players")
-public class PlayerEnt {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "player_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class PlayerEnt {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "players_seq")
+    @SequenceGenerator(name = "players_seq", sequenceName = "players_seq", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false)
     private String role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private TeamEnt team;
+    @Version
+    private Long version;
 
     public PlayerEnt() {
     }
 
-    public PlayerEnt(Long id, String nickname, String role) {
-        this.id = id;
+    public PlayerEnt(String nickname, String role) {
         this.nickname = nickname;
         this.role = role;
     }
@@ -53,11 +55,24 @@ public class PlayerEnt {
         this.role = role;
     }
 
-    public TeamEnt getTeam() {
-        return team;
+    public Long getVersion() {
+        return version;
     }
 
-    public void setTeam(TeamEnt team) {
-        this.team = team;
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerEnt playerEnt = (PlayerEnt) o;
+        return Objects.equals(id, playerEnt.id) && Objects.equals(nickname, playerEnt.nickname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nickname);
     }
 }

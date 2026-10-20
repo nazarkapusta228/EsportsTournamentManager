@@ -1,16 +1,22 @@
-version: '3.8'
-
 services:
   db:
-    image: postgres
+    image: postgres:16
     restart: always
     environment:
-      POSTGRES_DB: nbddb
-      POSTGRES_USER: nbd
-      POSTGRES_PASSWORD: nbdpassword
+      POSTGRES_DB: esportsdb
+      POSTGRES_USER: esports
+      POSTGRES_PASSWORD: esportspassword
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - 5432:5432
+      - "5433:5432"
     volumes:
-      - pg:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U esports -d esportsdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
-  pg:
+  pg_data:
