@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS teams (
     version BIGINT DEFAULT 0
 );
 
--- Table: team_players
+-- Table: team_players !!!
 CREATE TABLE IF NOT EXISTS team_players (
     team_id BIGINT NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
     player_id BIGINT NOT NULL REFERENCES players(id) ON DELETE CASCADE,

@@ -51,15 +51,15 @@ public class Main {
             System.out.println("2. Creating Team 'Rising Stars' with Amateur Players...");
             Team risingStarsTeam = new Team(null, "Rising Stars", "NA");
             
-            AmateurPlayer rookie1 = new AmateurPlayer(null, "ProdigyKid", "AWPer", 
-                    "Global Elite", 5000);
-            AmateurPlayer rookie2 = new AmateurPlayer(null, "RookieStar", "Rifler", 
-                    "Supreme", 3500);
+//            AmateurPlayer rookie1 = new AmateurPlayer(null, "ProdigyKid", "AWPer",
+//                    "Global Elite", 5000);
+//            AmateurPlayer rookie2 = new AmateurPlayer(null, "RookieStar", "Rifler",
+//                    "Supreme", 3500);
             AmateurPlayer rookie3 = new AmateurPlayer(null, "NewHope", "Support", 
                     "Global Elite", 4200);
 
-            risingStarsTeam.addPlayer(rookie1);
-            risingStarsTeam.addPlayer(rookie2);
+//            risingStarsTeam.addPlayer(rookie1);
+//            risingStarsTeam.addPlayer(rookie2);
             risingStarsTeam.addPlayer(rookie3);
 
             teamRepository.save(risingStarsTeam);
@@ -82,7 +82,7 @@ public class Main {
             System.out.println("4. Testing business logic validation...");
             try {
                 Team invalidTeam = new Team(null, "Invalid Team", "EU");
-                invalidTeam.addPlayer(rookie1);
+                invalidTeam.addPlayer(rookie3);
                 invalidTeam.validateTeamComposition();
             } catch (IllegalStateException e) {
                 System.out.println("   Validation failed as expected: " + e.getMessage());
@@ -91,8 +91,10 @@ public class Main {
 
             // 5. Update team
             System.out.println("5. Updating team...");
-            naviTeam.setRegion("CIS");
-            teamRepository.update(naviTeam);
+            Team teamToUpdate = teamRepository.findById(naviTeam.getId()).orElseThrow();
+            teamToUpdate.setRegion("CIS");
+            teamRepository.update(teamToUpdate);
+
             Team updated = teamRepository.findById(naviTeam.getId()).orElse(null);
             System.out.println("   Updated team region: " + (updated != null ? updated.getRegion() : "Not found"));
             System.out.println();

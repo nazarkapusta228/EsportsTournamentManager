@@ -16,7 +16,7 @@
         <class>com.esports.infrastructure.database.entity.LanTournamentEnt</class>
         <class>com.esports.infrastructure.database.entity.MatchEnt</class>
         <class>com.esports.infrastructure.database.entity.GroupEnt</class>
-        <class>com.esports.infrastructure.database.entity.TournamentRegistrationEnt</class>
+
 
         <properties>
             <!-- PostgreSQL Connection Properties -->

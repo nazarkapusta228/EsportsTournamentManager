@@ -52,13 +52,13 @@ public class TeamMapper {
         entity.setName(domain.getName());
         entity.setRegion(domain.getRegion());
 
-        // Update players list
-        entity.getPlayers().clear();
-        if (domain.getPlayers() != null) {
-            for (Player player : domain.getPlayers()) {
-                PlayerEnt playerEnt = PlayerMapper.toEntity(player);
-                entity.getPlayers().add(playerEnt);
-            }
-        }
+//        // Update players list
+//        entity.getPlayers().clear();
+//        if (domain.getPlayers() != null) {
+//            for (Player player : domain.getPlayers()) {
+//                PlayerEnt playerEnt = PlayerMapper.toEntity(player);
+//                entity.getPlayers().add(playerEnt);
+//            }
+//        }
     }
 }
