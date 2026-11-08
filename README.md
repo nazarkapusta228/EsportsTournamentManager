@@ -143,6 +143,36 @@ CREATE TABLE lan_tournaments (
    java -jar target/EsportsTournamentManager-1.0-SNAPSHOT.jar
    ```
 
+### MongoDB Replica Set
+
+The MongoDB assignment uses a three-member replica set alongside the PostgreSQL setup. PostgreSQL does not need to be disabled; the services use separate ports. To start only MongoDB and its one-time replica-set/data initializer:
+
+```bash
+docker compose -f Docker/docker-compose.yml up -d mongo1 mongo2 mongo3 mongo-init
+```
+
+The initializer configures `rs0`, creates indexes, inserts sample esports data into `esportsdb`, and initializes the numeric ID counters. On Windows, add this line to `C:\Windows\System32\drivers\etc\hosts` (with administrator rights) so Java on the host can resolve the replica-set member addresses to the published local ports:
+
+```text
+127.0.0.1 mongo-rs.local
+```
+
+Inside the containers, `mongo-rs.local` resolves to the Docker host gateway. The Java client uses `MONGODB_URI` and `MONGODB_DATABASE` when set; otherwise it connects to the local Docker Desktop replica set and database `esportsdb`.
+
+MongoDB JSON Schema validators enforce document types and key business limits, including at most seven unique players per team and no more registered teams than a tournament's `maxTeams`. Each adapter write changes one document atomically. Related records must be saved through their own repositories before their IDs are referenced; adapters validate those references and do not cascade writes across collections. Deletion is rejected while other documents still reference the record.
+
+Run the MongoDB repository and adapter integration tests with:
+
+```bash
+mvn "-Dtest=MongoRepositoryIntegrationTest,MongoAdapterIntegrationTest,MongoPrimaryFailoverIntegrationTest" test
+```
+
+The tests create and remove their own uniquely named databases. The failover test stops the current primary with Docker Compose, checks that a new primary accepts repository writes and reads, then starts the stopped node again. To stop the MongoDB services without deleting their stored data:
+
+```bash
+docker compose -f Docker/docker-compose.yml stop mongo1 mongo2 mongo3 mongo-init
+```
+
 ### Configuration
 
 Database connection settings are in `src/main/resources/META-INF/persistence.xml`:
@@ -180,7 +210,8 @@ EsportsTournamentManager/
 │   │   ├── mapper/          # Domain-Entity mappers
 │   │   ├── repository/      # Low-level persistence
 │   │   └── adapter/         # Repository implementations
-│   └── Main.java
+│   ├── Main.java (MongoDB entry point)
+│   └── PostgreSQLMain.java (previous ORM demo)
 ├── src/main/resources/
 │   └── META-INF/persistence.xml
 ├── Docker/

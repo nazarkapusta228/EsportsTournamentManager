@@ -7,15 +7,15 @@
     <persistence-unit name="EsportsPU" transaction-type="RESOURCE_LOCAL">
 
         <!-- JPA Entity Classes -->
-        <class>com.esports.infrastructure.database.entity.TeamEnt</class>
-        <class>com.esports.infrastructure.database.entity.PlayerEnt</class>
-        <class>com.esports.infrastructure.database.entity.ProPlayerEnt</class>
-        <class>com.esports.infrastructure.database.entity.AmateurPlayerEnt</class>
-        <class>com.esports.infrastructure.database.entity.TournamentEnt</class>
-        <class>com.esports.infrastructure.database.entity.OnlineTournamentEnt</class>
-        <class>com.esports.infrastructure.database.entity.LanTournamentEnt</class>
-        <class>com.esports.infrastructure.database.entity.MatchEnt</class>
-        <class>com.esports.infrastructure.database.entity.GroupEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.TeamEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.PlayerEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.ProPlayerEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.AmateurPlayerEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.TournamentEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.OnlineTournamentEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.LanTournamentEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.MatchEnt</class>
+        <class>com.esports.infrastructure.postgresql.entity.GroupEnt</class>
 
 
         <properties>

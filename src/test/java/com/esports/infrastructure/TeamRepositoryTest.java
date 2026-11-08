@@ -3,8 +3,8 @@ package com.esports.infrastructure;
 import com.esports.domain.model.ProPlayer;
 import com.esports.domain.model.Team;
 import com.esports.domain.repository.TeamRepository;
-import com.esports.infrastructure.database.JpaUtil;
-import com.esports.infrastructure.database.adapter.JpaTeamRepositoryAdapter;
+import com.esports.infrastructure.postgresql.JpaUtil;
+import com.esports.infrastructure.postgresql.adapter.JpaTeamRepositoryAdapter;
 import org.junit.jupiter.api.*;
 
 import java.math.BigDecimal;
@@ -93,32 +93,6 @@ public class TeamRepositoryTest {
         // Then
         assertNotNull(teams);
         assertTrue(teams.size() >= 2);
-    }
-
-    @Test
-    @Order(4)
-    @org.junit.jupiter.api.Disabled("Update with players requires complex merge logic")
-    void testUpdate() {
-        // Given
-        Team team = new Team(null, "Update Test " + timestamp, "EU");
-        team.addPlayer(new ProPlayer(null, "UpdatePlayer1_" + timestamp, "AWPer",
-                new BigDecimal("5000.00"), "Sponsor1"));
-        team.addPlayer(new ProPlayer(null, "UpdatePlayer2_" + timestamp, "Rifler",
-                new BigDecimal("4000.00"), "Sponsor2"));
-        team.addPlayer(new ProPlayer(null, "UpdatePlayer3_" + timestamp, "Support",
-                new BigDecimal("3000.00"), "Sponsor3"));
-
-        teamRepository.save(team);
-        Long savedId = team.getId();
-
-        // When
-        team.setRegion("NA");
-        teamRepository.update(team);
-
-        // Then
-        Optional<Team> updated = teamRepository.findById(savedId);
-        assertTrue(updated.isPresent());
-        assertEquals("NA", updated.get().getRegion());
     }
 
     @Test
